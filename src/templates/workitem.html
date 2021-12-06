@@ -1,0 +1,10 @@
+{% extends "base.html" %} {% block title %}Workitem Page{% endblock %} 
+{% block content %}
+{{ workitem }}
+{{ user.notes[0] }}
+{% if workitem in user.notes %}
+        workitem - {{ workitem }}
+        {% else %}
+        This workitem does not exist
+        {% endif %}
+{% endblock %}
