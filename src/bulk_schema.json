@@ -1,0 +1,21 @@
+{
+     "type": "array",
+     "items": {
+         "type": "object",
+         "properties": {
+             "title": {
+                 "typt": "string",
+                 "minLength": 1,
+                 "maxLength": 99,
+                 },
+             "emailSender": {
+                 "type": "stirng",
+                 "minLength": 1,
+                 "maxLength": 99
+                 },
+             
+         },
+         "required": ["title", "emailSender"],
+         "additionalProperties": false
+     }
+}
