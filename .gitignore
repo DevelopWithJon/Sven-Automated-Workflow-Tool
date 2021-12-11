@@ -141,6 +141,9 @@ dmypy.json
 # pytype static type analyzer
 .pytype/
 
+# text
+.txt
+
 # Cython debug symbols
 cython_debug/
 
