@@ -1,18 +1,33 @@
 {% extends "base.html" %} {% block title %}Home{% endblock %} {% block content
     %}
+   
     <h1 align="center">Notes</h1>
     <ul class="list-group list-group-flush" id="notes">
-      <a href="#" class="list-group-item list-group-item-action active">
+      <div class="list-group-item list-group-item-action active">
         Pending Workitems
-      </a>
+      </div>
       {% for note in user.notes %}
-        {{note.date}}
-  
+        {% if note.status == "PENDING" %}
           <a href="/workitem/{{ note.data }}" class="list-group-item list-group-item-action">workitem - {{ note.data }} </a>
-          <button type="button" class="close" onClick="deleteNote({{ note.id }})">
-            <span aria-hidden="true">&times;</span>
-          </button>
+            <button type="button" class="close" onClick="deleteNote({{ note.id }})">
+              <span aria-hidden="true">&times;</span>
+            </button>
         </li>
+        {% endif %}
+      {% endfor %}
+    </ul>
+    <ul class="list-group list-group-flush" id="notes">
+      <div class="list-group-item list-group-item-action active">
+        Completed Workitems
+      </div>
+      {% for note in user.notes %}
+        {% if note.status == "COMPLETE" %}
+          <a href="/workitem/{{ note.data }}" class="list-group-item list-group-item-action">workitem - {{ note.data }} </a>
+            <button type="button" class="close" onClick="deleteNote({{ note.id }})">
+              <span aria-hidden="true">&times;</span>
+            </button>
+        </li>
+        {% endif %}
       {% endfor %}
     </ul>
     <form method="POST">

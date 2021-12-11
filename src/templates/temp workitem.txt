@@ -1,0 +1,20 @@
+                                    <div class="dropdown" onchange='this.form.submit()'>
+                                        {% if note.status == "COMPLETE" %}
+                                            <button class="btn btn-primary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                {{note.status}}
+                                            </button>
+                                        {% elif note.status == "PENDING" %}
+                                            <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                {{note.status}}
+                                            </button>
+                                        {% elif note.status == "BLOCKED" %}
+                                            <button class="btn btn-warning btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                {{note.status}}
+                                            </button>
+                                        {% endif %}
+                                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                        <a class="dropdown-item" href="#">"COMPLETE"</a>
+                                        <a class="dropdown-item" href="#">"PENDING"</a>
+                                        <a class="dropdown-item" href="#">"BLOCKED"</a>
+                                    </div>
+                                  </div>

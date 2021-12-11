@@ -1,0 +1,1 @@
+test_payload = [{"location": "Kanasas City, MO", "coordinates": (39.0997, 94.5786)}, {"location": "Princeton, NJ", "coordinates": (40.3573, 74.6672)}, {"location": "Tulsa, OK", "coordinates":  (36.1540, 95.9928)}]

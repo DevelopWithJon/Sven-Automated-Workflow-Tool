@@ -1,9 +1,10 @@
 """View file."""
 from __init__ import db
+from utils.constants import WI_STATUS
 from flask import Blueprint, flash, jsonify, render_template, request
 from flask_login import login_required, current_user
 import json
-from models import Note
+from models import Form, Note
 
 views = Blueprint("views", __name__)
 
@@ -38,6 +39,4 @@ def delete_note():
 @views.route('/workitem/<noteId>', methods=['GET', 'POST'])
 @login_required
 def workitem(noteId):
-    
-    return render_template("workitem.html", user=current_user, workitem=noteId)
-
+    return render_template("workitem.html", user=current_user, workitem=noteId, WI_STATUS=WI_STATUS)
