@@ -16,6 +16,8 @@ API = "AIzaSyB6Lwiy8_Mgt71agC0ClD1RIeFiDvhqrMg"
 API2 = "d562d77d1f1a2dbc9b087e827faf63fe"
 GAS_PRICE = 3.612
 
+test_payload_v2 = [{'State': 'Alabama', 'City': 'Madison', 'Customer_Name': 'Test', 'Company': 'Test Co', 'Product': {'Generic Name': 'rosuvastatin calcium', 'Brand Name': 'Crestor', 'Price': 31.69}, 'Units': 197, 'Creation_date': '11-12-2021 20:29:135169', 'location': 'Madison,AL', 'coordinates': (34.694505, -86.757772)}, {'State': 'New Mexico', 'City': 'Albuquerque', 'Customer_Name': 'Test', 'Company': 'Test Co', 'Product': {'Generic Name': 'ibuprofen tablet', 'Brand Name': 'Motrin', 'Price': 65.81}, 'Units': 104, 'Creation_date': '11-12-2021 20:29:135169', 'location': 'Albuquerque,NM', 'coordinates': (35.128683, -106.579128)}, {'State': 'Washington', 'City': 'Yakima', 'Customer_Name': 'Test', 'Company': 'Test Co', 'Product': {'Generic Name': 'amitriptyline tablet', 'Brand Name': 'Elavil', 'Price': 43.42}, 'Units': 12, 'Creation_date': '11-12-2021 20:29:135169', 'location': 'Yakima,WA', 'coordinates': (46.593247, -120.547823)}, {'State': 'Wisconsin', 'City': 'Appleton', 'Customer_Name': 'Test', 'Company': 'Test Co', 'Product': {'Generic Name': 'amoxapine tablet', 'Brand Name': 'Amoxapine tablet', 'Price': 51.22}, 'Units': 337, 'Creation_date': '11-12-2021 20:29:135169', 'location': 'Appleton,WI', 'coordinates': (44.265929, -88.394699)}]
+
 def get_data(payload=None):
     if payload is None:
         test_num = int(input())
@@ -67,6 +69,13 @@ def ad_matrix(payload=None, distribution_center=None):
             if i == j:
                 matrix[i][j] = 0
             else:
+                distance = geodis.distance(payload[i]["coordinates"],payload[j]["coordinates"]).miles
+                cost_of_travel = distance*GAS_PRICE
                 matrix[i][j] = geodis.distance(payload[i]["coordinates"],payload[j]["coordinates"]).miles
+                if "Product" in payload[i]:
+                    revenue_of_travel = payload[i]['Product']['Price'] * payload[i]['Units']
+                    matrix[i][j] = revenue_of_travel - cost_of_travel
+                else:
+                    matrix[i][j] = cost_of_travel
         
     return matrix, location_map

@@ -26,7 +26,3 @@ def dicBuilder():
     order_dict["Units"] = random.randint(10,500)
     order_dict["Creation_date"] = datetime.datetime.now().strftime("%d-%m-%Y %H:%S:%f")
     return order_dict
-
-d = randomGenerator(2)
-d.append(DISTRIBUTION_CENTER_MAP[0])
-print(d)

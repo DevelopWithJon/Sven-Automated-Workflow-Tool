@@ -13,10 +13,12 @@ parentdir = os.path.dirname(currentdir)
 sys.path.insert(0, parentdir) 
 
 # importing from parent directory
-from tests.test_routeSetup import test_payload
+from tests.test_routeSetup import test_payload_v2
 
 # implementation of traveling Salesman Problem 
 # https://www.geeksforgeeks.org/traveling-salesman-problem-tsp-implementation/
+
+# Problem is looking for heighest profits rather than shortest distance so we replace min_path with max_path
 def travellingSalesmanProblem(graph, locations, s):
     V=len(graph)
 
@@ -27,7 +29,7 @@ def travellingSalesmanProblem(graph, locations, s):
             vertex.append(i)
 
     # store minimum weight Hamiltonian Cycle
-    min_path = sys.maxsize
+    max_path = 0
     next_permutation=permutations(vertex)
     for i in next_permutation:
 
@@ -45,25 +47,29 @@ def travellingSalesmanProblem(graph, locations, s):
         current_pathweight += graph[k][s]
 
         # update minimum
-        if min_path > current_pathweight:
-            min_path = current_pathweight
+        if max_path < current_pathweight:
+            max_path = current_pathweight
             res = current_dest
         
-    return (res, min_path)
+    return (res, max_path)
+
+def loop_assignments(payload,center):
+    matrix, location_map = ad_matrix(payload, center)
+    print("#"*50)
+    print(display_matrix(matrix, location_map))
+    print("#"*50)
+    location = list(location_map.values())
+    
+    return travellingSalesmanProblem(matrix, location, 0)
 
 def assign_to_warehouse(payload):
     
     candidates = []
     
     for center in DISTRIBUTION_CENTER_MAP:
-        matrix, location_map = ad_matrix(payload, center)
-        print("#"*50)
-        print(display_matrix(matrix, location_map))
-        print("#"*50)
-        location = list(location_map.values())
-        
-        candidates.append(travellingSalesmanProblem(matrix, location, 0))
-    return min(candidates)
+        copy_payload = payload.copy()
+        candidates.append(loop_assignments(copy_payload, center))
+    return max(candidates)
 
 if __name__ == "__main__":
-    print(assign_to_warehouse(test_payload))
+    print(assign_to_warehouse(test_payload_v2))
