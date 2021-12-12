@@ -6,19 +6,22 @@ import requests
 from Random_Order_Generator import randomGenerator
 import time
 from utils.constants import US_STATE_ABB_MAP
+import logging
 
+logging.basicConfig(filename='example.log', encoding='utf-8')
+LOGGER = logging.getLogger(__name__)
 
 GEOLOCATE = "http://api.positionstack.com/v1/forward?access_key="
 API = "AIzaSyB6Lwiy8_Mgt71agC0ClD1RIeFiDvhqrMg"
 API2 = "d562d77d1f1a2dbc9b087e827faf63fe"
-
+GAS_PRICE = 3.612
 
 def get_data(payload=None):
     if payload is None:
         test_num = int(input())
-
         test_data = randomGenerator(test_num)
         payload = test_data
+    
     for record in payload:
         location = location_formatter(record["State"], record["City"])
         record["location"] = location
@@ -28,7 +31,7 @@ def get_data(payload=None):
             record["coordinates"] = (geo_json["data"][0]["latitude"],geo_json["data"][0]["longitude"])
         else:
             time.sleep(1)
-            print("needed to sleep")
+            LOGGER.info('API needed an additional second')
             geo_json = json.loads(geo_request.text)
             record["coordinates"] = (geo_json["data"][0]["latitude"],geo_json["data"][0]["longitude"])
     return payload
@@ -39,19 +42,19 @@ def location_formatter(state,city):
     return location
 
 def display_matrix(matrix, location_map):
-    
     print(pd.DataFrame(matrix, columns=location_map.values(), index=location_map.values()))
-     
+    
 
-
-def ad_matrix(payload=None):
+def ad_matrix(payload=None, distribution_center=None):
     if not payload:
         payload = get_data()
     if len(payload)<2:
-        return "payload too small"
+        LOGGER.error("payload too small")
+        raise ValueError
 
     # setup location list
-
+    if distribution_center:
+        payload.insert(0,distribution_center)
 
     locations_list = [record["location"] for record in payload]
     matrix = [[[] for _ in range(len(locations_list))] for _ in range(len(locations_list))]

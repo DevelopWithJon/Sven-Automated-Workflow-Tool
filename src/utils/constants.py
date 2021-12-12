@@ -3,6 +3,7 @@ import numpy as np
 import random
 
 WI_STATUS = ["COMPLETE", "PENDING", "BLOCKED"]
+DISTRIBUTION_CENTER_MAP = [{'location': 'Chicago, IL', "coordinates": (41.881832, -87.623177)}, {'location': 'Dallas, TX', "coordinates": (32.779167, -96.808891)}, {'location': "Los Angeles, CA", "coordinates": (34.0522, -118.2437)} , {'location': "Newark. NJ", "coordinates": (40.735657, -74.172363)}] # https://blog.kencogroup.com/top-10-cities-for-a-distribution-center
 US_STATE_ABB_MAP = {
     "Alabama": "AL",
     "Alaska": "AK",

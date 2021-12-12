@@ -2,7 +2,10 @@ import os
 import sys
 import inspect
 import heapq
+
+from utils.constants import DISTRIBUTION_CENTER_MAP
 from routeSetup import ad_matrix, display_matrix
+from itertools import permutations
 
 # Setting parent directory
 currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
@@ -12,21 +15,8 @@ sys.path.insert(0, parentdir)
 # importing from parent directory
 from tests.test_routeSetup import test_payload
 
-
-# A Python program for Dijkstra's shortest
-# path algorithm for adjacency
-# list representation of graph
-
-from collections import defaultdict
-import sys
-
-# Python3 program to implement traveling salesman
-# problem using naive approach.
-from sys import maxsize
-from itertools import permutations
-
-
-# implementation of traveling Salesman Problem
+# implementation of traveling Salesman Problem 
+# https://www.geeksforgeeks.org/traveling-salesman-problem-tsp-implementation/
 def travellingSalesmanProblem(graph, locations, s):
     V=len(graph)
 
@@ -37,7 +27,7 @@ def travellingSalesmanProblem(graph, locations, s):
             vertex.append(i)
 
     # store minimum weight Hamiltonian Cycle
-    min_path = maxsize
+    min_path = sys.maxsize
     next_permutation=permutations(vertex)
     for i in next_permutation:
 
@@ -61,9 +51,19 @@ def travellingSalesmanProblem(graph, locations, s):
         
     return (res, min_path)
 
+def assign_to_warehouse(payload):
+    
+    candidates = []
+    
+    for center in DISTRIBUTION_CENTER_MAP:
+        matrix, location_map = ad_matrix(payload, center)
+        print("#"*50)
+        print(display_matrix(matrix, location_map))
+        print("#"*50)
+        location = list(location_map.values())
+        
+        candidates.append(travellingSalesmanProblem(matrix, location, 0))
+    return min(candidates)
 
-matrix, location_map = ad_matrix()
-display_matrix(matrix, location_map)
-location = list(location_map.values())
-
-print(travellingSalesmanProblem(matrix, location, 0))
+if __name__ == "__main__":
+    print(assign_to_warehouse(test_payload))

@@ -3,7 +3,7 @@ import random
 import datetime
 from typing import Any, Dict, List
 
-from utils.constants import DRUGS_PAYLOAD, US_CITIES_MAP
+from utils.constants import DRUGS_PAYLOAD, US_CITIES_MAP, DISTRIBUTION_CENTER_MAP
 
 KEYS = ["State", "City", "Customer_Name", "Company"]
 
@@ -26,3 +26,7 @@ def dicBuilder():
     order_dict["Units"] = random.randint(10,500)
     order_dict["Creation_date"] = datetime.datetime.now().strftime("%d-%m-%Y %H:%S:%f")
     return order_dict
+
+d = randomGenerator(2)
+d.append(DISTRIBUTION_CENTER_MAP[0])
+print(d)
