@@ -2,9 +2,11 @@ import os
 import sys
 import inspect
 import heapq
+from statistics import mean
 
 from utils.constants import DISTRIBUTION_CENTER_MAP
-from routeSetup import ad_matrix, display_matrix
+from utils.parse_route_data import payload_to_database
+from routeSetup import ad_matrix, display_matrix, get_data
 from itertools import permutations
 
 # Setting parent directory
@@ -51,25 +53,43 @@ def travellingSalesmanProblem(graph, locations, s):
             max_path = current_pathweight
             res = current_dest
         
-    return (res, max_path)
+    return (max_path, res)
 
-def loop_assignments(payload,center):
-    matrix, location_map = ad_matrix(payload, center)
-    print("#"*50)
-    print(display_matrix(matrix, location_map))
-    print("#"*50)
-    location = list(location_map.values())
+def altered_tour(matrix, location):
     
+    least_profitable_location = sys.maxsize
+    least_profitable_location_int = None
+    for i, v in enumerate(matrix):
+        if least_profitable_location > mean(v) and i!=0:
+            least_profitable_location = mean(v)
+            least_profitable_location_int = i
+    matrix = matrix[:least_profitable_location_int] + matrix[least_profitable_location_int+1:]
+    location = location[:least_profitable_location_int] + location[least_profitable_location_int+1:]
     return travellingSalesmanProblem(matrix, location, 0)
 
-def assign_to_warehouse(payload):
+def loop_assignments(payload, center):
     
+    matrix, location_map = ad_matrix(payload, center)
+    # print("#"*50)
+    # print(display_matrix(matrix, location_map))
+    # print("#"*50)
+    
+    location = list(location_map.values())
+    full_route = travellingSalesmanProblem(matrix, location, 0)
+    altered = altered_tour(matrix, location)
+    altered+=full_route
+    return max(full_route, altered)
+
+def assign_to_warehouse(payload=None, gen_items=None):
+    
+    optimized_payload=get_data(payload=payload, gen_items=gen_items)
     candidates = []
     
     for center in DISTRIBUTION_CENTER_MAP:
-        copy_payload = payload.copy()
+        copy_payload = optimized_payload.copy()
         candidates.append(loop_assignments(copy_payload, center))
-    return max(candidates)
-
-if __name__ == "__main__":
-    print(assign_to_warehouse(test_payload_v2))
+        
+    assignment = max(candidates)
+    # payload_to_database(optimized_payload, assignment)
+    
+    return optimized_payload, assignment

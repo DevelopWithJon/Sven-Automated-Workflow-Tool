@@ -1,14 +1,14 @@
 {% extends "base.html" %} {% block title %}Home{% endblock %} {% block content
     %}
-   
+
     <h1 align="center">Notes</h1>
     <ul class="list-group list-group-flush" id="notes">
       <div class="list-group-item list-group-item-action active">
         Pending Workitems
       </div>
-      {% for note in user.notes %}
+      {% for note in data %}
         {% if note.status == "PENDING" %}
-          <a href="/workitem/{{ note.data }}" class="list-group-item list-group-item-action">workitem - {{ note.data }} </a>
+          <a href="/workitem/{{ note.id }}" class="list-group-item list-group-item-action">workitem - {{ note.id }} </a>
             <button type="button" class="close" onClick="deleteNote({{ note.id }})">
               <span aria-hidden="true">&times;</span>
             </button>
@@ -20,9 +20,9 @@
       <div class="list-group-item list-group-item-action active">
         Completed Workitems
       </div>
-      {% for note in user.notes %}
+      {% for note in data %}
         {% if note.status == "COMPLETE" %}
-          <a href="/workitem/{{ note.data }}" class="list-group-item list-group-item-action">workitem - {{ note.data }} </a>
+          <a href="/workitem/{{ note.id }}" class="list-group-item list-group-item-action">workitem - {{ note.id }} </a>
             <button type="button" class="close" onClick="deleteNote({{ note.id }})">
               <span aria-hidden="true">&times;</span>
             </button>
@@ -35,6 +35,14 @@
       <br />
       <div align="center">
         <button type="submit" class="btn btn-primary">Add Note</button>
+      </div>
+    </form>
+    <br />
+    <form method="POST">
+      <textarea name="Random_Order_Generator" id="Random_Order_Generator" class="form-control"></textarea>
+      <br />
+      <div align="center">
+        <button type="submit" class="btn btn-primary">Select number of random location</button>
       </div>
     </form>
     {% endblock %}

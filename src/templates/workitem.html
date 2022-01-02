@@ -115,10 +115,7 @@
         
 
            <!-- Workitem Data -->
-           
-           {% for note in user.notes %}
-           {% if workitem == note.data %}
-           
+
            
            <div class="card">
             <div class="card-header d-flex justify-content-between align-items-center">
@@ -149,10 +146,10 @@
                                 <td>Offenburg</td>
                                 <td>
                                     <select class="selectpicker" data-style="btn-outline-secondary">
-                                        <option selected>{{note.status}}</option>
-                                        {% for status in WI_STATUS if status!=note.status %}
+                                        <option selected>{{data.status}}</option>
+                                        {% for status in WI_STATUS if status!=data.status %}
                                             <option>{{ status }}</option>
-                                        {% endfor %}
+                                            {% endfor %}
                                       </select>
                                 </td>
                             </tr>
@@ -163,10 +160,6 @@
 
             
 
-            {% else %}
-            This workitem does not exist
-            {% endif %}
-        {% endfor %}
 </body>
 </html>
 {% endblock%}

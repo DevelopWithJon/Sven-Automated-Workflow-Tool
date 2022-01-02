@@ -4,13 +4,15 @@ from os import path
 from flask_login import LoginManager
 
 db = SQLAlchemy()
-DB_NAME = "database.db"
+DB_NAME = "mydatabase"
 
 
 def create_app():
     app = Flask(__name__)
     app.config['SECRET_KEY'] = 'hjshjhdjah kjshkjdhjs'
-    app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{DB_NAME}'
+    # old sqlite connection
+    # app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{DB_NAME}'
+    app.config['SQLALCHEMY_DATABASE_URI'] = f'mysql+pymysql://root:Svenpassword@localhost/{DB_NAME}'
     db.init_app(app)
 
     from views import views

@@ -1,0 +1,35 @@
+Work item generator
+
+MySql login info
+password - Svenpassword
+username - root
+windows service name - MySQL80
+
+Email login info - 
+Email: SvenWorkFlowPlatform@gmail.com
+password: ProjectPassword
+
+DB login info
+Email: admin@admin.com
+First Name: Admin
+Password: Adminpassword
+
+buckets for pending, inProcess, blocked, and completed
+
+manual work item generator
+automated email generators using excel attachments
+natural language processing for body entries
+
+system design - incoming manufacturing orders and outgoing customer orders
+
+security - auth, platform for both sides
+
+shortest path calculator for all pending order then makes assignments based on some conditions
+Real location data will be used via google maps
+how it will work:
+ - multiple warehouses around the country. For each order the algorithm will be ran on each, the warehouse that can make the order in the shortest path will be assigned the order 
+
+Bonus most cost effective path takes into consideration the pay as well as the distance
+
+Useful links - https://elvinouyang.github.io/project/how-to-query-google-street-view-api-with-python/
+http://www.compjour.org/lessons/flask-single-page/multiple-dynamic-routes-in-flask/

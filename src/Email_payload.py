@@ -1,24 +1,27 @@
-"""Catch updated from emails"""
-from configs import EMAILUSERNAME, EMAILPASSWORD
+"""Catch updates from emails"""
+from utils.configs import EMAILUSERNAME, EMAILPASSWORD
+from utils.parse_excel import parse_orders
+from retry import retry
 
-import imaplib
 import email
+import imaplib
 import os
 
-host = 'imap.gmail.com'
-username = EMAILUSERNAME
-password = EMAILPASSWORD
+import logging
 
-mail = imaplib.IMAP4_SSL(host)
-mail.login(username, password)
-mail.select("inbox")
+cdir = os.getcwd()
+attachment_path = cdir + "/attachments/"
+
+
+logging.basicConfig(filename='example.log', encoding='utf-8')
+LOGGER = logging.getLogger(__name__)
+
+
 
 my_messaages = []
 ATTACHMENT_EXT = (".xlsx",".xls",".csv")
 
-_, search_data = mail.search(None, 'SEEN')
-
-def get_inbox():
+def get_inbox(search_data, mail):
     
     for num in search_data[0].split():
         email_data = {}
@@ -45,17 +48,48 @@ def get_inbox():
                         email_data["attachments"]+=[filename]
                     else:
                         email_data["attachments"] = [filename]
-                    # with open(filename,'wb') as f:
-                    #     f.write(part.get_payload(decode=True))
+                    file_path = os.path.join(attachment_path + filename)
+                    with open(file_path,'wb') as f:
+                        f.write(part.get_payload(decode=True))
         my_messaages.append(email_data)
     return my_messaages
+
+
+@retry(ValueError, delay=1, backoff=1.1, max_delay=15)
+def await_new_email():
+    
+    host = 'imap.gmail.com'
+    username = EMAILUSERNAME
+    password = EMAILPASSWORD
+
+
+    try:
+        mail = imaplib.IMAP4_SSL(host)
+        mail.login(username, password)
+        mail.select("inbox")
+    except:
+        LOGGER.error("EMAILUSERNAME and EMAILPASSWORD should not be Null")
+        mail.logout()
+        raise AttributeError()
+    
+    _, search_data = mail.search(None, 'UNSEEN', 'SUBJECT "New Order"')    
+    email_orders = get_inbox(search_data, mail)
+    if email_orders:
+        LOGGER.info("server recieved new email")
+        execute_order(email_orders)
+    else:
+        LOGGER.info("server recieved nothing")
+        print("server recieved nothing")
+        mail.logout()
+        raise ValueError()
+    
+    
+def execute_order(email_orders):
+    LOGGER.info(f"grabbed {len(email_orders)} new email order(s)")
+    for email_order in email_orders:
+        LOGGER.info(f'parsing {email_order}')
+        print(f'parsing {email_order}')
+        parse_orders(email_order["attachments"])
         
-def search_mesg(key, value, con):
-    _, data = con.search(None, key, '"{}"'.format(value))
-
-    return data
-
-def get_attachments():
-    pass
-print(get_inbox())
-#print(search_mesg("SUBJECT","info",mail))
+if __name__ == '__main__':
+    await_new_email()
