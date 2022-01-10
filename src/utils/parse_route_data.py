@@ -7,7 +7,7 @@ import logging
 
 
 try:
-    import simplejson as json
+    import simplejson as json  # type: ignore
 except:
     import json
 

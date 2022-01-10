@@ -1,21 +1,22 @@
 from flask import Flask
-from flask_sqlalchemy import SQLAlchemy
+from flask_sqlalchemy import SQLAlchemy  # type: ignore
 from os import path
-from flask_login import LoginManager
+from flask_login import LoginManager  # type: ignore
+from utils.configs import DB_NAME, SQLALCHEMY_DATABASE_URI, SECRET_KEY, SQLALCHEMY_TRACK_MODIFICATIONS
+
 
 db = SQLAlchemy()
-DB_NAME = "mydatabase"
 
 
 def create_app():
     app = Flask(__name__)
-    app.config["SECRET_KEY"] = "hjshjhdjah kjshkjdhjs"
+    app.config["SECRET_KEY"] = SECRET_KEY
     # old sqlite connection
     # app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{DB_NAME}'
     app.config[
         "SQLALCHEMY_DATABASE_URI"
-    ] = f"mysql+pymysql://root:Svenpassword@localhost/{DB_NAME}"
-    app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+    ] = SQLALCHEMY_DATABASE_URI
+    app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = SQLALCHEMY_TRACK_MODIFICATIONS
     db.init_app(app)
 
     from views import views
@@ -24,7 +25,7 @@ def create_app():
     app.register_blueprint(views, url_prefix="/")
     app.register_blueprint(auth, url_prefix="/")
 
-    from models import User, Note
+    from models import User
 
     create_database(app)
 
@@ -42,4 +43,3 @@ def create_app():
 def create_database(app):
     if not path.exists("src/" + DB_NAME):
         db.create_all(app=app)
-

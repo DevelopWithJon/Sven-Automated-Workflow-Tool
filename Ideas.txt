@@ -1,6 +1,7 @@
 Work item generator
 
 MySql login info
+URI = mysql+pymysql://root:Svenpassword@localhost
 password - Svenpassword
 username - root
 windows service name - MySQL80

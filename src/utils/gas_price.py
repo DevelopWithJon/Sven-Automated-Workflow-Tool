@@ -4,14 +4,14 @@ import time
 
 import logging
 
+from configs import EPA_API
+
 logging.basicConfig(filename="example.log", encoding="utf-8")
 LOGGER = logging.getLogger(__name__)
 
-API_KEY = "hV9SNbXgv9nZb6Q7hvK1ZUmnZNB86il5IicOqBno"
-
 
 def get_gas_price(API_KEY):
-    url = f"https://api.eia.gov/series/?api_key={API_KEY}&series_id=TOTAL.DFONUUS.M"
+    url = f"https://api.eia.gov/series/?api_key={EPA_API}&series_id=TOTAL.DFONUUS.M"
     gas_price_request = requests.get(url)
     if gas_price_request.status_code == 200:
         gas_price_json = json.loads(gas_price_request.text)

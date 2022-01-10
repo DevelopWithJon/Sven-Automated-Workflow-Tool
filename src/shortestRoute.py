@@ -15,8 +15,6 @@ currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentfram
 parentdir = os.path.dirname(currentdir)
 sys.path.insert(0, parentdir)
 
-# importing from parent directory
-from tests.test_routeSetup import test_payload_v2
 
 # implementation of traveling Salesman Problem
 # https://www.geeksforgeeks.org/traveling-salesman-problem-tsp-implementation/

@@ -3,7 +3,7 @@ import random
 import datetime
 from typing import Any, Dict, List
 
-from utils.constants import DRUGS_PAYLOAD, US_CITIES_MAP, DISTRIBUTION_CENTER_MAP
+from utils.constants import DRUGS_PAYLOAD, US_CITIES_MAP
 
 KEYS = ["State", "City", "Customer_Name", "Company"]
 

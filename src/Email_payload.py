@@ -1,7 +1,7 @@
 """Catch updates from emails"""
 from utils.configs import EMAILUSERNAME, EMAILPASSWORD
 from utils.parse_excel import parse_orders
-from retry import retry
+from retry import retry  # type: ignore
 
 import email
 import imaplib

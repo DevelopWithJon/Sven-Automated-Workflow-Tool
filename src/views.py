@@ -1,17 +1,18 @@
 """View file."""
 from __init__ import db
 from utils.constants import WI_STATUS
+from utils.configs import MAPS_API
 from utils.parse_route_data import create_map_data, payload_to_database
 
 from flask import Blueprint, flash, jsonify, render_template, request
-from flask_login import login_required, current_user
+from flask_login import login_required, current_user  # type: ignore
 import json
 from models import Note, Route
 from shortestRoute import assign_to_warehouse
 from Random_Order_Generator import randomGenerator
 
 try:
-    import simplejson as json
+    import simplejson as json  # type: ignore
 except:
     import json
 views = Blueprint("views", __name__)
@@ -161,4 +162,5 @@ def analyze_route(routeId):
         map_data=json_data,
         altered=altered,
         removed=removed,
+        MAPS_API=MAPS_API
     )

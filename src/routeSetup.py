@@ -1,21 +1,18 @@
 """Configure matrix."""
-from geopy import distance as geodis
+from geopy import distance as geodis  # type: ignore
 import json
 import pandas as pd
 import requests
 from Random_Order_Generator import randomGenerator
 import time
-from utils.constants import MILES_PER_GALLON, US_STATE_ABB_MAP
+from utils.constants import MILES_PER_GALLON, US_STATE_ABB_MAP, GAS_PRICE
+from utils.configs import GEOLOCATE_API
 import logging
 
 logging.basicConfig(filename="example.log", encoding="utf-8")
 LOGGER = logging.getLogger(__name__)
 
 GEOLOCATE = "http://api.positionstack.com/v1/forward?access_key="
-API = "AIzaSyB6Lwiy8_Mgt71agC0ClD1RIeFiDvhqrMg"
-API2 = "d562d77d1f1a2dbc9b087e827faf63fe"
-GAS_PRICE = 3.612
-
 
 def get_data(payload=None, gen_items=None):
     if payload is None:
@@ -25,7 +22,7 @@ def get_data(payload=None, gen_items=None):
     for record in payload:
         location = location_formatter(record["State"], record["City"])
         record["location"] = location
-        geo_request = requests.get(GEOLOCATE + API2 + "&query=" + location)
+        geo_request = requests.get(GEOLOCATE + GEOLOCATE_API + "&query=" + location)
         if geo_request.status_code == 200:
             geo_json = json.loads(geo_request.text)
             record["coordinates"] = (

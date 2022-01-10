@@ -1,15 +1,23 @@
 """Constants."""
 import numpy as np
-import random
+
+##### Numbers ####
+MILES_PER_GALLON = 6.5  # https://afdc.energy.gov/data/10310
+
+GAS_PRICE = 3.612  # https://gasprices.aaa.com/ for diesel as of 12/05/2021
+
+##### Lists #####
 
 WI_STATUS = ["COMPLETE", "PENDING", "BLOCKED"]
-MILES_PER_GALLON = 6.5  # https://afdc.energy.gov/data/10310
+
 DISTRIBUTION_CENTER_MAP = [
     {"location": "Chicago, IL", "coordinates": (41.881832, -87.623177)},
     {"location": "Dallas, TX", "coordinates": (32.779167, -96.808891)},
     {"location": "Los Angeles, CA", "coordinates": (34.0522, -118.2437)},
     {"location": "Newark, NJ", "coordinates": (40.735657, -74.172363)},
 ]  # https://blog.kencogroup.com/top-10-cities-for-a-distribution-center
+
+#### Maps #####
 
 DISTRIBUTION_CENTER_COORDINATES = {
     "Chicago, IL": {
