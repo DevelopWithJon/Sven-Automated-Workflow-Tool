@@ -1,3 +1,4 @@
+"""Configure matrix."""
 from geopy import distance as geodis
 import json
 import pandas as pd
