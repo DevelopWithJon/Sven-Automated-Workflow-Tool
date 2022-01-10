@@ -3,10 +3,9 @@ from typing import Any
 import pandas as pd
 import os
 
-cdir = os.getcwd()
-template = pd.read_excel(cdir + "/templates/Excel_Template.xlsx")
-
-print(template.columns)
+dirname = os.path.dirname
+abs = dirname(dirname(os.path.abspath(__file__)))
+template = pd.read_excel(abs + "\Excel_Template.xlsx")
 
 
 def payload_to_pandas(request_payload):
