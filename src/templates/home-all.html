@@ -1,0 +1,60 @@
+{% extends "base.html" %} {% block title %}Home{% endblock %} {% block content%}
+
+<html>
+
+<head>
+  <!--Styles-->
+  <link href="{{ url_for('static', filename='assets/css/home-style.css') }}" type="text/css" rel="stylesheet" />
+</head>
+
+<body>
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card card-white">
+          <div class="card-body">
+            <form method="POST">
+              <input type="text" class="form-control add-task" id="add-task" name="add-task" placeholder="New Task...">
+            </form>
+            <ul class="nav nav-pills todo-nav">
+              <li role="presentation" class="nav-item all-task active"><a href="/" class="nav-link">All</a></li>
+              <li role="presentation" class="nav-item active-task"><a href="/active" class="nav-link">Active</a></li>
+              <li role="presentation" class="nav-item completed-task"><a href="/completed"
+                  class="nav-link">Completed</a></li>
+              <li role="presentation" class="nav-item completed-task"><a href="/blocked" class="nav-link">Blocked</a>
+              </li>
+            </ul>
+            <br>
+
+            <div class="todo-list">{% for route in data %}
+              {% if route %}
+                {% if route.shortest_full_path.startswith("C") %}
+                {% set warehouse = "Chicago" %}
+                {% elif route.shortest_full_path.startswith("N") %}
+                {% set warehouse = "Newark" %}
+                {% elif route.shortest_full_path.startswith("D") %}
+                {% set warehouse = "Dallas" %}
+                {% elif route.shortest_full_path.startswith("L") %}
+                {% set warehouse = "Los Angeles" %}
+              {% endif %}
+              {% endif %}
+              <div class="todo-item">
+                <span>
+                  <a href="/workitem/{{ route.id }}">task - {{route.id}} {{warehouse}} {{route.status}}
+                    {{route.creation_date}}</a>
+                </span>
+                <a class="remove pull-right" href="#" data-toggle="modal" data-target="#confirm-modal"
+                  onClick="deleteRecord('{{ route.id }}')">
+                  <i class="fa fa-trash-o "></i>
+                </a>
+              </div>
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+</body>
+
+</html>
+{% endblock %}

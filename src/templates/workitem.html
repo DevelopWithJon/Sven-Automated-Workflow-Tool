@@ -1,5 +1,16 @@
 {% extends "base.html" %} {% block title %}Workitem Page{% endblock %} 
 {% block contentWI %}
+  {% if route_data %}
+    {% if route_data.shortest_full_path.startswith("C") %}
+      {% set warehouse = "Chicago" %}
+    {% elif route_data.shortest_full_path.startswith("N") %}
+      {% set warehouse = "Newark" %}
+    {% elif route_data.shortest_full_path.startswith("D") %}
+      {% set warehouse = "Dallas" %}
+    {% elif route_data.shortest_full_path.startswith("L") %}
+      {% set warehouse = "Los Angeles" %}
+    {% endif %}
+  {% endif %}
 
 <!DOCTYPE html>
 <!-- saved from url=(0054)https://getbootstrap.com/docs/4.0/examples/dashboard/# -->
@@ -17,7 +28,7 @@
 
   <body>
     <nav class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0">
-      <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="https://getbootstrap.com/docs/4.0/examples/dashboard/#">Company name(Placeholder)</a>
+      <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="https://getbootstrap.com/docs/4.0/examples/dashboard/#">{{warehouse}}</a>
     </nav>
 
     <div class="container-fluid">
@@ -103,7 +114,7 @@
             <h1 class="h2" style="position: center; left: 300px">Pending Workitem Tasks</h1>
             <div class="btn-toolbar mb-2 mb-md-0">
               <div class="btn-group mr-2">
-                <button class="btn btn-sm btn-outline-secondary">Analyze Route</button>
+                <a href="/analyze-route/{{ route_data.id }}" class="btn btn-sm btn-outline-secondary", role="button">Analyze Route</a>
                 <button class="btn btn-sm btn-outline-secondary">Export</button>
               </div>
               <button class="btn btn-sm btn-outline-secondary dropdown-toggle">
@@ -119,7 +130,7 @@
            
            <div class="card">
             <div class="card-header d-flex justify-content-between align-items-center">
-                <h4 class="card-title">Orders Today</h4>
+                <h4 class="card-title">Delivery Locations</h4>
                 <div class="d-flex ">
                     <i data-feather="download"></i>
                 </div>
@@ -131,35 +142,30 @@
                             <tr>
                                 <th>Order Number</th>
                                 <th>Name</th>
-                                <th>Email</th>
-                                <th>Phone</th>
+                                <th>Product</th>
+                                <th>Quantity</th>
+                                <th>Price</th>
+                                <th>State</th>
                                 <th>City</th>
-                                <th>Status</th>
                             </tr>
                         </thead>
                         <tbody>
+                          {% for location in locations_data %}
                             <tr>
-                                <td>1</td>
-                                <td>Graiden</td>
-                                <td>vehicula.aliquet@semconsequat.co.uk</td>
-                                <td>076 4820 8838</td>
-                                <td>Offenburg</td>
-                                <td>
-                                    <select class="selectpicker" data-style="btn-outline-secondary">
-                                        <option selected>{{data.status}}</option>
-                                        {% for status in WI_STATUS if status!=data.status %}
-                                            <option>{{ status }}</option>
-                                            {% endfor %}
-                                      </select>
-                                </td>
+                                <td>{{location.id}}</td>
+                                <td>{{location.customer_name}}</td>
+                                <td>{{location.product}}</td>
+                                <td>{{location.units}}</td>
+                                <td>{{location.price}}</td>
+                                <td>{{location.state}}</td>
+                                <td>{{location.city}}</td>
                             </tr>
+                          {% endfor %}
                         </tbody>
                     </table>
                 </div>
             </div>
 
-            
-
 </body>
 </html>
-{% endblock%}
+{% endblock %}

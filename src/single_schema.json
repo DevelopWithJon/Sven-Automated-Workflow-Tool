@@ -1,8 +1,0 @@
-{   "type": "object",
-    "WorkitemID": "string",
-    "Title": "string",
-    "Sender": "string",
-    "Assignee": "string",
-    "Creation Date": "datetime.datetime"
-		
-}

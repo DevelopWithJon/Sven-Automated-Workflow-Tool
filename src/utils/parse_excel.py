@@ -11,17 +11,20 @@ attachment_path = cdir + "/attachments/"
 
 template = pd.read_excel(cdir + "/templates/Excel_Template.xlsx")
 
+
 def make_df(order_record):
     if order_record.endswith(".csv"):
-        df = pd.read_csv(attachment_path+order_record)
+        df = pd.read_csv(attachment_path + order_record)
     else:
-        df = pd.read_excel(attachment_path+order_record)
+        df = pd.read_excel(attachment_path + order_record)
     return df
+
 
 def compare_to_template(df):
     if list(df.columns)[0:6] == list(template.columns)[0:6]:
         return True
     return False
+
 
 def parse_orders(order_payload):
     order_list = []
@@ -31,7 +34,7 @@ def parse_orders(order_payload):
             for index, series in df.iterrows():
                 order_list.append(dicBuilder(series))
     return assign_to_warehouse(order_list)
-    
+
 
 def dicBuilder(series):
     """Build order dictionaries"""

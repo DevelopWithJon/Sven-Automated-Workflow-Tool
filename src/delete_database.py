@@ -14,4 +14,3 @@ mycursor.execute("SHOW DATABASES")
 
 for db in mycursor:
     print(db)
-    
