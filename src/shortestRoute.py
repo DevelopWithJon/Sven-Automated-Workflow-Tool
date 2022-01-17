@@ -16,10 +16,10 @@ parentdir = os.path.dirname(currentdir)
 sys.path.insert(0, parentdir)
 
 
-# implementation of traveling Salesman Problem
+# Implementation of traveling Salesman Problem
 # https://www.geeksforgeeks.org/traveling-salesman-problem-tsp-implementation/
 
-# Problem is looking for heighest profits rather than shortest distance so we replace min_path with max_path
+# TSP is looking for the highest profits rather than the shortest distance so we replace min_path with max_path
 def travellingSalesmanProblem(graph, locations, s):
     V = len(graph)
 

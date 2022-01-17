@@ -113,14 +113,14 @@ def analyze_route(routeId):
                 create_map_data(routeId, location)
                 for location in json.loads(route_data.altered_path)
             ]
-            altered = True
-            removed = list(
-                set(route_data.shortest_full_path) - set(route_data.altered_path)
-            )[
-                0
-            ]  # pull removed location by converting both lists to sets and substracting the sets
-
-        elif "update-route" in request.form:
+            altered = True 
+            
+            removed = (set(eval(route_data.shortest_full_path)) - set(eval(route_data.altered_path))).pop()  # pull removed location by converting both lists to sets and substracting the sets
+            print(removed)
+            removed = Note.query.filter_by(route_id=routeId, location=removed).first().id
+            print(removed)
+            
+        elif "update-route" in request.form:  # updating route to altered route and removing poor location
             update_record = Route.query.filter_by(id=routeId).first()
             update_record.shortest_full_path = update_record.altered_path
             update_record.display_shortest_full_path = (
@@ -131,12 +131,9 @@ def analyze_route(routeId):
             update_record.display_altered_path = None
             update_record.altered_path_value = None
             update_record.alternate_route = False
-            db.session.commit()
-
-            remove = request.form.get("update-route")
-            location_to_remove = Note.query.filter_by(
-                route_id=routeId, location=remove
-            ).first()
+            
+            remove = eval(request.form.get("update-route"))
+            location_to_remove = Note.query.filter_by(id=remove).first()
             db.session.delete(location_to_remove)
             db.session.commit()
 

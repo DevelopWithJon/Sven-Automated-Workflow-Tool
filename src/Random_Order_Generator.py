@@ -30,6 +30,6 @@ def dicBuilder():
         random.randint(0, len(DRUGS_PAYLOAD) - 1)
     ]
     order_dict["Price"] = DRUGS_PAYLOAD[order_dict["Product"]]
-    order_dict["Units"] = random.randint(10, 60)
+    order_dict["Units"] = random.randint(1, 20)
     order_dict["Creation_date"] = datetime.datetime.now().strftime("%d-%m-%Y %H:%S:%f")
     return order_dict

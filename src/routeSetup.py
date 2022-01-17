@@ -11,6 +11,7 @@ import logging
 
 logging.basicConfig(filename="example.log", encoding="utf-8")
 LOGGER = logging.getLogger(__name__)
+LOGGER.setLevel(logging.INFO)
 
 GEOLOCATE = "http://api.positionstack.com/v1/forward?access_key="
 
@@ -23,13 +24,13 @@ def get_data(payload=None, gen_items=None):
         location = location_formatter(record["State"], record["City"])
         record["location"] = location
         geo_request = requests.get(GEOLOCATE + GEOLOCATE_API + "&query=" + location)
-        if geo_request.status_code == 200:
+        try:
             geo_json = json.loads(geo_request.text)
             record["coordinates"] = (
                 geo_json["data"][0]["latitude"],
                 geo_json["data"][0]["longitude"],
             )
-        else:
+        except:
             time.sleep(1)
             LOGGER.info("API needed an additional second")
             geo_json = json.loads(geo_request.text)
@@ -37,6 +38,7 @@ def get_data(payload=None, gen_items=None):
                 geo_json["data"][0]["latitude"],
                 geo_json["data"][0]["longitude"],
             )
+            
     return payload
 
 
