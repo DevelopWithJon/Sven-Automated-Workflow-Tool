@@ -89,7 +89,14 @@ def delete_record():
 @views.route("/workitem/<routeId>", methods=["GET", "POST"])
 @login_required
 def workitem(routeId):
-
+    
+    if request.method == "POST":
+        status = request.form.get("status")
+        update_record = Route.query.filter_by(id=routeId).first()
+        update_record.status = status
+        db.session.commit()
+        
+    
     return render_template(
         "workitem.html",
         user=current_user,
@@ -116,9 +123,7 @@ def analyze_route(routeId):
             altered = True 
             
             removed = (set(eval(route_data.shortest_full_path)) - set(eval(route_data.altered_path))).pop()  # pull removed location by converting both lists to sets and substracting the sets
-            print(removed)
             removed = Note.query.filter_by(route_id=routeId, location=removed).first().id
-            print(removed)
             
         elif "update-route" in request.form:  # updating route to altered route and removing poor location
             update_record = Route.query.filter_by(id=routeId).first()
