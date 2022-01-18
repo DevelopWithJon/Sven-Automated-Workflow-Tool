@@ -34,4 +34,4 @@ TSP algorithm was write with inspiration from https://www.geeksforgeeks.org/trav
 
 This is a simple flask based web app that uses practical elements like secure hash bases logins, google maps api, CSS, html, javascript with inspiration from bootstrap templates
 
-![home](https://imgur.com/a/WkeB6H5)
+![home](https://imgur.com/a/WkeB6H5.pgn)
